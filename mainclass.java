@@ -15,7 +15,6 @@ public class mainclass {
     public static void main(String[] args) {
         // Load E. coli genome
         String eColiGnome = ""
-        // + "GGTCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTGCTG";
         + "GTACTCAGTGTACGATCAGCTACCGACT";
 
         LDCF ldcf = new LDCF(1024, 4, 500);
@@ -29,17 +28,17 @@ public class mainclass {
                 ldcf.insert(hashCode);
             }
 
-            for (String kmer : kmers) {
-                ldcf.insert(Integer.parseInt(kmer, 2));
-            }
+            // for (String kmer : kmers) {
+            //     ldcf.insert(Integer.parseInt(kmer, 2));
+            // }
 
             System.out.println("k = " + k);
             System.out.println("Number of collisions: " + ldcf.numCollisions());
             System.out.println();
 
-            for (String kmer : kmers) {
-                ldcf.delete(Integer.parseInt(kmer, 2));
-            }
+            // for (String kmer : kmers) {
+            //     ldcf.delete(Integer.parseInt(kmer, 2));
+            // }
             
             System.out.println("Number of collisions: " + ldcf.numCollisions());
             System.out.println();
