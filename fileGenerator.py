@@ -25,7 +25,7 @@ def generate_fasta_file(filename, sequence_length):
     write_fasta(filename, header, sequence)
 
 # Configuración: longitud de la secuencia entre 10^3 y 10^7 caracteres
-sequence_length = random.randint(10**3, 10**4)
+sequence_length = random.randint(10**4, 10**6)
 filename = "synthetic_genome.fna"
 
 # Generar el archivo FASTA
