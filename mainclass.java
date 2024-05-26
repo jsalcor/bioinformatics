@@ -1,5 +1,9 @@
 package bioinformatics;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+
 public class mainclass {
 
     public static String[] generateKMers(String gnome, int k) {
@@ -17,11 +21,24 @@ public class mainclass {
         String eColiGnome = ""
         + "GTACTCAGTGTACGATCAGCTACCGACT";
 
+        // String filePath = "bioinformatics/datasets/GCF_000008865.2_ASM886v2_genomic.fna";
+        // String genome = null;
+
+        // try {
+        //     genome = new String(Files.readAllBytes(Paths.get(filePath)));
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
+
+        // // Rremove FASTA header if present
+        // genome = genome.replaceAll(">.*\n", "").replaceAll("\n", "");
+
         LDCF ldcf = new LDCF(1024, 4, 500);
 
         int[] kValues = {10, 20, 50, 100, 200};
         for (int k : kValues) {
             String[] kmers = generateKMers(eColiGnome, k);
+            // String[] kmers = generateKMers(genome, k);
 
             for (String kmer : kmers) {
                 int hashCode = kmer.hashCode();
@@ -40,8 +57,8 @@ public class mainclass {
             //     ldcf.delete(Integer.parseInt(kmer, 2));
             // }
             
-            System.out.println("Number of collisions: " + ldcf.numCollisions());
-            System.out.println();
+            // System.out.println("Number of collisions: " + ldcf.numCollisions());
+            // System.out.println();
 
             // Example lookup
             String sequence = "ACGTACGTAC";
