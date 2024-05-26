@@ -74,18 +74,16 @@ public class LDCF {
         int currentBucket = random.nextBoolean() ? i1 : i2;
         for (int n = 0; n < maxKicks; n++) {
             int j = random.nextInt(bucketSizes[level]);
+
+            if (buckets[level][currentBucket][j] == -1) {
+                buckets[level][currentBucket][j] = item;
+                return true;
+            }
+
             int evictedItem = buckets[level][currentBucket][j];
             buckets[level][currentBucket][j] = item;
             item = evictedItem;
-
             currentBucket = (currentBucket == i1) ? i2 : i1;
-
-            for (int k = 0; k < bucketSizes[level]; k++) {
-                if (buckets[level][currentBucket][k] == -1) {
-                    buckets[level][currentBucket][k] = item;
-                    return true;
-                }
-            }
         }
 
         return false;
@@ -100,7 +98,8 @@ public class LDCF {
         }
         resize();
 
-        return insert(item);
+        int level = hash1(item, 0) % buckets.length;
+        return insertAtLevel(item, level);
     }
 
     private boolean lookupAtLevel(int item, int level) {

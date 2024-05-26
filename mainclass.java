@@ -2,6 +2,9 @@ package bioinformatics;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class mainclass {
@@ -23,50 +26,84 @@ public class mainclass {
         return kmers;
     }
 
+    public static void insertKmersWithProgress(LDCF ldcf, String[] kmers) {
+        int totalKmers = kmers.length;
+
+        for (int i = 0; i < totalKmers; i++) {
+            String kmer = kmers[i];
+            int hashCode = kmer.hashCode();
+            ldcf.insert(hashCode);
+
+            // Calculate and print progress
+            double progress = ((double) (i + 1) / totalKmers) * 100;
+            System.out.printf("Progress: %.2f%%\n", progress);
+        }
+    }
+
+    // Method to read the sequence from the file
+    private static String readSequenceFromFile(String filePath) {
+        StringBuilder sequence = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            // Read lines until the end of the file
+            while ((line = br.readLine()) != null) {
+                sequence.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sequence.toString();
+    }
+
     public static void main(String[] args) {
-        // Load E. coli genome
-        String genome = "GTACTCAGTGTACGATCAGCTACCGACT";
+        // String genome = "GTACTCAGTGTACGATCAGCTACCGACT";
+        String sequence = "GTTACGGACA";
+        int size_sequence = sequence.length();
 
         // String filePath = "bioinformatics/datasets/GCF_000008865.2_ASM886v2_genomic.fna";
-        // String genome = null;
+        String filePath = "bioinformatics/synthetic_genome.fna";
+        String genome = null;
 
-        // try {
-        //     genome = new String(Files.readAllBytes(Paths.get(filePath)));
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        try {
+            genome = new String(Files.readAllBytes(Paths.get(filePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        // // Rremove FASTA header if present
-        // genome = genome.replaceAll(">.*\n", "").replaceAll("\n", "");
+        // Rremove FASTA header if present
+        genome = genome.replaceAll(">.*\n", "").replaceAll("\n", "");
+        // genome = readSequenceFromFile(filePath);
+        System.out.println(genome);
 
         LDCF ldcf = new LDCF(1024, 4, 500);
 
-        int[] kValues = {5, 10};
+        int[] kValues = {size_sequence, 20};
+        boolean exists = false;
         for (int k : kValues) {
             try {
                 String[] kmers = generateKMers(genome, k);
 
+                // Insert each k-mer's hash code into the Cuckoo Filter with progress
+                // insertKmersWithProgress(ldcf, kmers);
+
                 for (String kmer : kmers) {
                     int hashCode = kmer.hashCode();
                     ldcf.insert(hashCode);
+                    // System.out.println(kmer);              
                 }
-
-                // for (String kmer : kmers) {
-                //     ldcf.insert(Integer.parseInt(kmer, 2));
-                // }
 
                 System.out.println("k = " + k);
                 System.out.println("Number of collisions: " + ldcf.numCollisions());
                 System.out.println();
-                
-                // System.out.println("Number of collisions: " + ldcf.numCollisions());
-                // System.out.println();
 
                 // Example lookup
-                // "TCCTTGGATGAGCGCG"
-                String sequence = "GACT";
-                boolean exists = ldcf.lookup(sequence.hashCode());
+                exists = ldcf.lookup(sequence.hashCode());
                 System.out.println("Sequence exists: " + exists);
+
+                if (exists == true) {
+                    break;
+                }
+
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
