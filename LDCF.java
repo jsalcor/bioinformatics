@@ -159,19 +159,4 @@ public class LDCF {
 
         return false;
     }
-
-    public int numCollisions() {
-        int count = 0;
-        for (int level = 0; level < buckets.length; level++) {
-            for (int i = 0; i < buckets[level].length; i++) {
-                for (int j = 0; j < bucketSizes[level]; j++) {
-                    if (buckets[level][i][j] != null) {
-                        count++;
-                    }
-                }
-            }
-        }
-
-        return count;
-    }
 }
