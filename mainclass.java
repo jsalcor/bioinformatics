@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class mainclass {
 
@@ -26,19 +27,19 @@ public class mainclass {
         return kmers;
     }
 
-    public static void insertKmersWithProgress(LDCF ldcf, String[] kmers) {
-        int totalKmers = kmers.length;
+    // public static void insertKmersWithProgress(LDCF ldcf, String[] kmers) {
+    //     int totalKmers = kmers.length;
 
-        for (int i = 0; i < totalKmers; i++) {
-            String kmer = kmers[i];
-            int hashCode = kmer.hashCode();
-            ldcf.insert(hashCode);
+    //     for (int i = 0; i < totalKmers; i++) {
+    //         String kmer = kmers[i];
+    //         int hashCode = kmer.hashCode();
+    //         ldcf.insert(hashCode);
 
-            // Calculate and print progress
-            double progress = ((double) (i + 1) / totalKmers) * 100;
-            System.out.printf("Progress: %.2f%%\n", progress);
-        }
-    }
+    //         // Calculate and print progress
+    //         double progress = ((double) (i + 1) / totalKmers) * 100;
+    //         System.out.printf("Progress: %.2f%%\n", progress);
+    //     }
+    // }
 
     // Method to read the sequence from the file
     private static String readSequenceFromFile(String filePath) {
@@ -57,7 +58,11 @@ public class mainclass {
 
     public static void main(String[] args) {
         // String genome = "GTACTCAGTGTACGATCAGCTACCGACT";
-        String sequence = "GTTACGGACA";
+        // String sequence = "TCAGTGTACG";
+
+        // String genome = "GTTACGGACAGTCCCGTGGAGAATTTGCTACTACTGCGTGGCATGCGCTTATAGTCTACTTTTGAGACCGCAGGTCCGTACTTGACTGGCCTCTCCGAAGAGGCACAACGATCTTACTTGCTACCTTCTGTGAGGGTGAATAGGCGGATATAGGATGTAATATATCTAAGCATCGCTGCATCAAAAGCGCTGGTGTCACGTAACACCGGACGCCAACTTAACGTCAATCTGTGCGACTACGCCTAATTGAAGTTCTCGGTTCCGTTACTCCAATGAACTTCGTGCGTTATTGAGAAACTATACGTCCTATTGTTACAGTGCACGGCACGAGAGTTACGTTTGGCCTTACGTTCGAGTTGGAGGGACCGAAGCGGGGGGATTCGGACAAGGACGAACAGCGTCCCAATATGTTATACGAAAGCGAGATCTCATATCTGTCCGGTAGGGAAACTTCGGGGGTGGCCGAGAACCTGCAGTCATTCGGGTCACAGACAGACAAATGGTTCCATGGAGCGCCCAATAAGCGCAGACGGAGCAACGAGCTACCGGTTCGACGAAGTTCTTGTTATGCGCAGCGTGTGAAGATTCAGCAATCTCGACAGCAGTCCCAGGTATTGTGGAGATGTGTTCAGCAGTGACGTCTATTTATTCCGCCAGATCAGTCTTAAATCTGCGCGAGTTTTGTTACCTTGGGATCTCCTCCGCGTCGATACTATTAAT";
+        String sequence = "CTTATTTCCA";
+        
         int size_sequence = sequence.length();
 
         // String filePath = "bioinformatics/datasets/GCF_000008865.2_ASM886v2_genomic.fna";
@@ -72,7 +77,6 @@ public class mainclass {
 
         // Rremove FASTA header if present
         genome = genome.replaceAll(">.*\n", "").replaceAll("\n", "");
-        // genome = readSequenceFromFile(filePath);
         System.out.println(genome);
 
         LDCF ldcf = new LDCF(1024, 4, 500);
@@ -87,20 +91,28 @@ public class mainclass {
                 // insertKmersWithProgress(ldcf, kmers);
 
                 for (String kmer : kmers) {
-                    int hashCode = kmer.hashCode();
-                    ldcf.insert(hashCode);
-                    // System.out.println(kmer);              
+                    // int hashCode = kmer.hashCode();
+                    // ldcf.insert(hashCode);
+                    ldcf.insert(kmer);
+                    // System.out.println(kmer);
+                    exists = ldcf.lookup(sequence);
+                    System.out.println("Sequence exists: " + exists);  
+
+                    if (exists) {
+                        break;
+                    }           
                 }
 
-                System.out.println("k = " + k);
-                System.out.println("Number of collisions: " + ldcf.numCollisions());
-                System.out.println();
+                // System.out.println("k = " + k);
+                // System.out.println("Number of collisions: " + ldcf.numCollisions());
+                // System.out.println();
 
                 // Example lookup
-                exists = ldcf.lookup(sequence.hashCode());
-                System.out.println("Sequence exists: " + exists);
+                // exists = ldcf.lookup(sequence.hashCode());
+                // exists = ldcf.lookup(sequence);
+                // System.out.println("Sequence exists: " + exists);
 
-                if (exists == true) {
+                if (exists) {
                     break;
                 }
 
