@@ -259,6 +259,12 @@ public class mainclass {
 
 ```
 
+### File Generator
+A python script that creates a synthetical genome for evaluation purposes. Its lenght is randomly chosen between 10^3 and 10^7 characters.
+
+### Datasets folder
+The folder where the datasets of genome sequences are placed. We already provide two examples: the E.Coli example and a syntethical generated dataset using the previous file generator.
+
 ## Installation
 
 Clone the repository to your local machine:
