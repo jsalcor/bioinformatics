@@ -108,17 +108,6 @@ private boolean lookupAtLevel(String item, int level) {
         return false;
     }
 
-    // Check if item is in one of the two buckets
-    public boolean lookup(String item) {
-        for (int level = 0; level < buckets.length; level++) {
-            if (lookupAtLevel(item, level)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 ```
 
 
