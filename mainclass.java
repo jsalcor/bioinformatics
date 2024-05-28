@@ -47,42 +47,55 @@ public class mainclass {
         genome = genome.replaceAll(">.*\n", "").replaceAll("\n", ""); // Rremove FASTA header if present
         
         int size_sequence = sequence.length();
-        int[] kValues = {size_sequence};
+
+        // deberia de funcionar con este vector para que haga todos del tiron, pero solo funciona bien al poner 1
+        // int[] kValues = {50, size_sequence, 80, 90, 100, 200, 500, 1000, 1500, 2000};
+        int[] kValues = {1000};
 
         System.out.println("Looking for this sequence: " + sequence);
 
         LDCF ldcf = new LDCF(1024, 4, 500);
 
-        long startTime = System.currentTimeMillis();
         boolean exists = false;
         for (int k : kValues) {
             try {
+                long startTime = System.currentTimeMillis();
                 String[] kmers = generateKMers(genome, k);
+                exists = false;
+                System.out.println("For K-value="+k+":");
 
                 for (String kmer : kmers) {
                     ldcf.insert(kmer);
                     exists = ldcf.lookup(sequence);
 
+
                     if (exists) {
                         System.out.println("Sequence exists: " + exists);
                         break;
-                    }           
+                    }     
                 }
 
-                if (exists) {
-                    break;
+                if(exists == false){
+                    System.out.println("Sequence exists: " + exists);
+                        // break;
                 }
+
+                long endTime = System.currentTimeMillis();
+                float duration = endTime - startTime;
+                duration = duration / 1000;
+
+                // Imprime la duración total
+                System.out.println("The program lasted " + duration + " s.");
+
+                // if (exists) {
+                //     break;
+                // }
 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
 
-        long endTime = System.currentTimeMillis();
-        float duration = endTime - startTime;
-        duration = duration / 1000;
-
-        // Imprime la duración total
-        System.out.println("The program lasted " + duration + " s.");
+        
     }
 }
