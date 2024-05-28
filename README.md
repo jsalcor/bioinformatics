@@ -265,6 +265,9 @@ A python script that creates a synthetical genome for evaluation purposes. Its l
 ### Datasets folder
 The folder where the datasets of genome sequences are placed. We already provide two examples: the E.Coli example and a syntethical generated dataset using the previous file generator.
 
+### License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
 ## Installation
 
 Clone the repository to your local machine:
