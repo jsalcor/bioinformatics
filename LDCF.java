@@ -105,19 +105,20 @@ public class LDCF {
     private boolean lookupAtLevel(String item, int level) {
         int i1 = hash1(item, level);
         int i2 = hash2(item, level);
-
+    
         for (int j = 0; j < bucketSizes[level]; j++) {
-            if (item.equals(buckets[level][i1][j])) {
+            if (buckets[level][i1][j] != null && buckets[level][i1][j].contains(item)) {
                 return true;
             }
-
-            if (item.equals(buckets[level][i2][j])) {
+    
+            if (buckets[level][i2][j] != null && buckets[level][i2][j].contains(item)) {
                 return true;
             }
         }
-
+    
         return false;
     }
+    
 
     // Check if item is in one of the two buckets
     public boolean lookup(String item) {
