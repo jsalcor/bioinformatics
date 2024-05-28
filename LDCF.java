@@ -110,7 +110,7 @@ public class LDCF {
             if (buckets[level][i1][j] != null && buckets[level][i1][j].contains(item)) {
                 return true;
             }
-    
+            
             if (buckets[level][i2][j] != null && buckets[level][i2][j].contains(item)) {
                 return true;
             }
