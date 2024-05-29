@@ -14,6 +14,12 @@ To compile and run the the program, these commands must be executed from the ori
 - javac bioinformatics/LDCF.java bioinformatics/mainclass.java
 - java bioinformatics.mainclass
 
+## Reference
+
+This implementation is a different approach of the original Logarithmic Dynamic Cuckoo Filter algorithm, which can be 
+found in the following link: https://github.com/CGCL-codes/LDCF.git, being the authors of the original code Fan Zhang(zhangf@hust.edu.cn), 
+Hanhua Chen (chen@hust.edu.cn), and Hai Jin (hjin@hust.edu.cn).
+
 
 ## Features
 
